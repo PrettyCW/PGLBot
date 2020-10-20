@@ -23,6 +23,7 @@ client.on('message', message => {
     t2.addPlayer(new Player("ClayX", 71));
 
     game.simGame(t1, t2);
+    message.channel.send(game.matchEvents);
   }
 })
 

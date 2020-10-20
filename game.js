@@ -55,7 +55,8 @@ function scoreEvent (team, player, time) {
   }
   formattedTime += Math.floor(time / 60);
   formattedTime += ":";
-  formattedTime += time % 60;
+  if (time % 60 < 10) formattedTime += "0";
+  formattedTime += (time % 60);
   matchEvents.push(formattedTime + " - " + player + " has scored for " + team);
 }
 
@@ -122,3 +123,4 @@ function simGame (t1, t2) {
 exports.Team = Team;
 exports.Player = Player;
 exports.simGame = simGame;
+exports.matchEvents = matchEvents;
