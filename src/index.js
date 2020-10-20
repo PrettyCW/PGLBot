@@ -1,6 +1,7 @@
 const game = require('./game')
 const fs = require('fs')
 const Discord = require('discord.js')
+const path = require('path')
 const Team = game.Team
 const Player = game.Player
 
@@ -28,7 +29,7 @@ client.on('message', (message) => {
   }
 })
 
-fs.readFile('token.txt', (err, data) => {
+fs.readFile(path.join(__dirname, '..', 'token.txt'), (err, data) => {
   if (err) return console.log(err)
   client.login(data.toString())
 })
