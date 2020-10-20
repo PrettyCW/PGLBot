@@ -1,43 +1,49 @@
 // Game Simulation Code below.
+let scoringOdds = 0.007
+let minimumOdds = 0.001
+let triplePlaystylePenalty = 30;
+let doublePlaystylePenalty = 10;
+
 function Player (name, rating, playstyle) {
   this.name = name
   this.rating = rating
-  this.playstyle = playstyle // 0: striker, 1: guardian, 2: anything else
+  this.playstyle = playstyle // 0: striker, 1: guardian, 2: playmaker, 3: all-around
   this.goals = 0
 }
 
-function Team (name, abbrev) {
+function Team (name, abbrev, players) {
   this.name = name
   this.abbrev = abbrev
-  this.players = []
+  this.players = players
   this.goals = 0
 
-  this.addPlayer = (player) => {
-    this.players.push(player)
+  // Calculate team overall rating
+  let total = 0
+  for (let i = 0; i < this.players.length; ++i) {
+    total += this.players[i].rating
   }
 
-  this.rating = () => {
-    let total = 0
-    for (let i = 0; i < this.players.length; ++i) {
-      total += this.players[i].rating
-    }
-    return total
+  if (this.players[0].playstyle != 3 && this.players[0].playstyle == this.players[1].playstyle && this.players[0].playstyle == this.players[2].playstyle) {
+    total -= triplePlaystylePenalty
+  } else if (this.players[0].playstyle != 3 && (this.players[0].playstyle == this.players[1].playstyle || this.players[0].playstyle == this.players[2].playstyle)) {
+    total -= doublePlaystylePenalty
+  } else if (this.players[1].playstyle != 3 && this.players[1].playstyle == this.players[2].playstyle) {
+    total -= doublePlaystylePenalty
   }
+
+  this.rating = total
 
   this.playerScoreChance = (playerIndex) => {
     let player = this.players[playerIndex]
     if (player.playstyle == 0) {
-      return player.rating + this.rating() / 10
+      return player.rating + this.rating / 10
     } else if (player.playstyle == 1) {
-      return player.rating - this.rating() / 10
+      return player.rating - this.rating / 10
     } else {
       return player.rating
     }
   }
 }
-
-let scoringOdds = 0.007
-let minimumOdds = 0.001
 
 function scoreEvent (team, player, time) {
   let formattedTime = ''
@@ -70,8 +76,8 @@ function score (team, time) {
 
 function simGame (t1, t2) {
   let time = 299
-  let t1Odds = scoringOdds + (t1.rating() - t2.rating()) * 0.00005
-  let t2Odds = scoringOdds + (t2.rating() - t1.rating()) * 0.00005
+  let t1Odds = scoringOdds + (t1.rating - t2.rating) * 0.00005
+  let t2Odds = scoringOdds + (t2.rating - t1.rating) * 0.00005
   let matchEvents = []
 
   if (t1Odds < minimumOdds) t1Odds = minimumOdds

@@ -13,15 +13,8 @@ client.on('ready', () => {
 
 client.on('message', (message) => {
   if (message.content == 'sim') {
-    let t1 = new Team('Ghost Gaming', 'GG')
-    let t2 = new Team('Echo Fox', 'FOX')
-    t1.addPlayer(new Player('AlphaKep', 50))
-    t1.addPlayer(new Player('Gimmick', 60))
-    t1.addPlayer(new Player('SquishyMuffinz', 70))
-
-    t2.addPlayer(new Player('Andy', 50))
-    t2.addPlayer(new Player('hec', 60))
-    t2.addPlayer(new Player('ClayX', 71))
+    let t1 = new Team('Ghost Gaming', 'GG', [new Player('AlphaKep', 50, 0), new Player('Gimmick', 60, 1), new Player('SquishyMuffinz', 70, 2)])
+    let t2 = new Team('Echo Fox', 'FOX', [new Player('Andy', 50, 0), new Player('hec', 60, 0), new Player('ClayX', 71, 0)])
 
     message.channel.send(game.simGame(t1, t2))
   }
