@@ -23,9 +23,7 @@ client.on('message', (message) => {
     t2.addPlayer(new Player('hec', 60))
     t2.addPlayer(new Player('ClayX', 71))
 
-    game.simGame(t1, t2)
-    console.log(game.matchEvents)
-    message.channel.send(game.matchEvents)
+    message.channel.send(game.simGame(t1, t2))
   }
 })
 
