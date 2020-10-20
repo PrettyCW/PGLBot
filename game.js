@@ -36,14 +36,8 @@ function Team (name, abbrev) {
   }
 }
 
-
-
 let scoringOdds = 0.007
 let minimumOdds = 0.001
-
-
-
-
 
 let matchEvents = []
 
