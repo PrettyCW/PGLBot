@@ -74,7 +74,6 @@ function simGame (t1, t2) {
   let time = 299;
   let t1Odds = scoringOdds + ((t1.rating() - t2.rating()) * 0.00005);
   let t2Odds = scoringOdds + ((t2.rating() - t1.rating()) * 0.00005);
-  matchEvents = [];
 
   if (t1Odds < minimumOdds) t1Odds = minimumOdds;
   if (t2Odds < minimumOdds) t2Odds = minimumOdds;
