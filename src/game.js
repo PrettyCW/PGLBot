@@ -111,6 +111,7 @@ function Game(t1, t2) {
     }
 
     if (this.t1.goals == t2.goals) {
+      this.events.push('OVERTIME')
       let overtime = 0
       while (true) {
         let rand = Math.random()
