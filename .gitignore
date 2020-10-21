@@ -1,5 +1,4 @@
 node_modules/
 token.txt
-.env
-google.creds.json
-data.json
+*.creds*
+*.env
