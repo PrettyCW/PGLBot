@@ -1,9 +1,10 @@
 function delayed(events, delay, channel) {
-  for (let i = 0; i < events.length; ++i) {
-    setTimeout(() => {
-      channel.send(events[i])
-    }, delay * (i + 1))
-  }
+  let counter = 0
+  let interval = setInterval(() => {
+    channel.send(events[counter])
+    counter++
+    if (counter >= events.length) clearInterval(interval)
+  }, delay)
 }
 
 exports.delayed = delayed

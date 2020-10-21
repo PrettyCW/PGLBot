@@ -14,10 +14,10 @@ const defaultDelay = 2000
 // Sample teams
 let t1 = new Team('Ghost Gaming', 'GG', [
   new Player('AlphaKep', 50, 0),
-  new Player('Gimmick', 60, 1),
-  new Player('SquishyMuffinz', 70, 2),
+  new Player('Gimmick', 60, 0),
+  new Player('SquishyMuffinz', 70, 0),
 ])
-let t2 = new Team('Echo Fox', 'FOX', [new Player('Andy', 50, 0), new Player('hec', 60, 0), new Player('ClayX', 71, 0)])
+let t2 = new Team('Echo Fox', 'FOX', [new Player('Andy', 50, 0), new Player('hec', 60, 1), new Player('ClayX', 71, 2)])
 
 client.on('ready', () => {
   console.log('Bot intialized.')
