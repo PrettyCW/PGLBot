@@ -42,10 +42,12 @@ function Team(name, abbrev, players) {
 
   this.playerScoreChance = (playerIndex) => {
     let player = this.players[playerIndex]
+    let ratingTotal = 0
+    for (let i = 0; i < this.players.length; ++i) ratingTotal += this.players[i].rating
     if (player.playstyle == 0) {
-      return player.rating + this.rating / 10
+      return player.rating + ratingTotal / 10
     } else if (player.playstyle == 1) {
-      return player.rating - this.rating / 10
+      return player.rating - ratingTotal / 10
     } else {
       return player.rating
     }
