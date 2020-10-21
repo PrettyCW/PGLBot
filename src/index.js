@@ -6,13 +6,24 @@ const Team = game.Team
 const Player = game.Player
 
 const client = new Discord.Client()
+const prefix = '!'
+const defaultDelay = 2000
 
 client.on('ready', () => {
   console.log('Bot intialized.')
 })
 
 client.on('message', (message) => {
-  if (message.content == 'sim') {
+  // Ignore messages that don't start with the prefix or are sent by the bot
+  if (!message.content.startsWith(prefix) || message.author.bot) return
+  const args = message.content.slice(prefix.length).trim().split(' ')
+  const command = args.shift().toLowerCase()
+
+  if (command == 'sim') {
+    if (args[0] == undefined) {
+      args[0] = defaultDelay
+    }
+
     let t1 = new Team('Ghost Gaming', 'GG', [
       new Player('AlphaKep', 50, 0),
       new Player('Gimmick', 60, 1),
@@ -24,7 +35,12 @@ client.on('message', (message) => {
       new Player('ClayX', 71, 0),
     ])
 
-    message.channel.send(game.simGame(t1, t2))
+    let events = game.simGame(t1, t2)
+    for (let i = 0; i < events.length; ++i) {
+      setTimeout(() => {
+        message.channel.send(events[i])
+      }, args[0] * (i + 1))
+    }
   }
 })
 
