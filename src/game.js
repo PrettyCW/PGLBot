@@ -83,45 +83,57 @@ function score(team, time) {
   }
 }
 
-function simGame(t1, t2) {
-  let time = 299
-  let t1Odds = scoringOdds + (t1.rating - t2.rating) * 0.00005
-  let t2Odds = scoringOdds + (t2.rating - t1.rating) * 0.00005
-  let matchEvents = []
+function Game(t1, t2) {
+  this.t1 = t1
+  this.t2 = t2
+  this.events = []
 
-  if (t1Odds < minimumOdds) t1Odds = minimumOdds
-  if (t2Odds < minimumOdds) t2Odds = minimumOdds
+  this.t1.goals = 0
+  this.t2.goals = 0
 
-  while (time > -1) {
-    let rand = Math.random()
-    if (rand < t1Odds) {
-      matchEvents.push(score(t1, time))
-    } else if (rand < t1Odds + t2Odds) {
-      matchEvents.push(score(t2, time))
-    }
+  this.sim = () => {
+    let time = 299
+    let t1Odds = scoringOdds + (this.t1.rating - t2.rating) * 0.00005
+    let t2Odds = scoringOdds + (t2.rating - this.t1.rating) * 0.00005
 
-    --time
-  }
+    if (t1Odds < minimumOdds) t1Odds = minimumOdds
+    if (t2Odds < minimumOdds) t2Odds = minimumOdds
 
-  if (t1.goals == t2.goals) {
-    let overtime = 0
-    while (true) {
+    while (time > -1) {
       let rand = Math.random()
       if (rand < t1Odds) {
-        matchEvents.push(score(t1, -overtime))
-        break
+        this.events.push(score(t1, time))
       } else if (rand < t1Odds + t2Odds) {
-        matchEvents.push(score(t2, -overtime))
-        break
+        this.events.push(score(t2, time))
       }
-      ++overtime
-    }
-  }
 
-  matchEvents.push(t1.abbrev + ': ' + t1.goals + ' ' + t2.abbrev + ': ' + t2.goals)
-  return matchEvents
+      --time
+    }
+
+    if (this.t1.goals == t2.goals) {
+      let overtime = 0
+      while (true) {
+        let rand = Math.random()
+        if (rand < t1Odds) {
+          this.events.push(score(t1, -overtime))
+          break
+        } else if (rand < t1Odds + t2Odds) {
+          this.events.push(score(t2, -overtime))
+          break
+        }
+        ++overtime
+      }
+    }
+
+    if (this.t1.goals > t2.goals) {
+      this.winner = t1
+    } else {
+      this.winner = t2
+    }
+    this.events.push(this.t1.abbrev + ': ' + this.t1.goals + ' ' + t2.abbrev + ': ' + t2.goals)
+  }
 }
 
 exports.Team = Team
 exports.Player = Player
-exports.simGame = simGame
+exports.Game = Game

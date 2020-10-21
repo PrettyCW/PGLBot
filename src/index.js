@@ -2,12 +2,22 @@ const game = require('./game')
 const fs = require('fs')
 const Discord = require('discord.js')
 const path = require('path')
+const discordOutput = require('./discordOutput')
 const Team = game.Team
 const Player = game.Player
+const Game = game.Game
 
 const client = new Discord.Client()
 const prefix = '!'
 const defaultDelay = 2000
+
+// Sample teams
+let t1 = new Team('Ghost Gaming', 'GG', [
+  new Player('AlphaKep', 50, 0),
+  new Player('Gimmick', 60, 1),
+  new Player('SquishyMuffinz', 70, 2),
+])
+let t2 = new Team('Echo Fox', 'FOX', [new Player('Andy', 50, 0), new Player('hec', 60, 0), new Player('ClayX', 71, 0)])
 
 client.on('ready', () => {
   console.log('Bot intialized.')
@@ -20,27 +30,35 @@ client.on('message', (message) => {
   const command = args.shift().toLowerCase()
 
   if (command == 'sim') {
+    // If no argument, set it to default
     if (args[0] == undefined) {
       args[0] = defaultDelay
     }
 
-    let t1 = new Team('Ghost Gaming', 'GG', [
-      new Player('AlphaKep', 50, 0),
-      new Player('Gimmick', 60, 1),
-      new Player('SquishyMuffinz', 70, 2),
-    ])
-    let t2 = new Team('Echo Fox', 'FOX', [
-      new Player('Andy', 50, 0),
-      new Player('hec', 60, 0),
-      new Player('ClayX', 71, 0),
-    ])
+    let game = new Game(t1, t2)
+    game.sim()
+    discordOutput.delayed(game.events, args[0], message.channel)
+  } else if (command == 'series') {
+    let wins = [0, 0]
+    if (args[0] == undefined) args[0] = defaultDelay
+    if (args[1] == undefined) args[1] = 3
+    let gameNum = 0
+    let seriesEvents = []
+    while (wins[0] < args[1] && wins[1] < args[1]) {
+      ++gameNum
+      let game = new Game(t1, t2)
+      game.events.push('Game ' + gameNum + ' | ' + t1.abbrev + ' (' + wins[0] + ' - ' + wins[1] + ') ' + t2.abbrev)
+      game.sim()
+      seriesEvents = seriesEvents.concat(game.events)
 
-    let events = game.simGame(t1, t2)
-    for (let i = 0; i < events.length; ++i) {
-      setTimeout(() => {
-        message.channel.send(events[i])
-      }, args[0] * (i + 1))
+      if (game.winner == t1) {
+        wins[0]++
+      } else {
+        wins[1]++
+      }
     }
+    seriesEvents.push('Series Result: ' + t1.abbrev + ' (' + wins[0] + ' - ' + wins[1] + ') ' + t2.abbrev)
+    discordOutput.delayed(seriesEvents, args[0], message.channel)
   }
 })
 
