@@ -47,7 +47,9 @@ client.on('message', (message) => {
     while (wins[0] < args[1] && wins[1] < args[1]) {
       ++gameNum
       let game = new Game(t1, t2)
-      game.events.push('Game ' + gameNum + ' | ' + t1.abbrev + ' (' + wins[0] + ' - ' + wins[1] + ') ' + t2.abbrev)
+      game.events.push(
+        '**Game ' + gameNum + ' | ' + t1.abbrev + ' (' + wins[0] + ' - ' + wins[1] + ') ' + t2.abbrev + '**',
+      )
       game.sim()
       seriesEvents = seriesEvents.concat(game.events)
 
