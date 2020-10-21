@@ -3,16 +3,16 @@ module.exports = () => {
     return {
       MNCS: {
         spreadsheetId: process.env.DB_SHEET_ID,
-        teamGames: '', // the sheet id goes here
-        playerGames: '',
+        gameLog: '632279557',
+        // newSheet: '', // more sheets can be added here
       },
     }
   } else {
     return {
       MNCS: {
         spreadsheetId: process.env.DB_SHEET_ID,
-        teamGames: '',
-        playerGames: '',
+        gameLog: '1838970166',
+        // newSheet: '',
       },
     }
   }
