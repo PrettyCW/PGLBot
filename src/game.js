@@ -1,17 +1,17 @@
 // Game Simulation Code below.
 let scoringOdds = 0.007
 let minimumOdds = 0.001
-let triplePlaystylePenalty = 30;
-let doublePlaystylePenalty = 10;
+let triplePlaystylePenalty = 30
+let doublePlaystylePenalty = 10
 
-function Player (name, rating, playstyle) {
+function Player(name, rating, playstyle) {
   this.name = name
   this.rating = rating
   this.playstyle = playstyle // 0: striker, 1: guardian, 2: playmaker, 3: all-around
   this.goals = 0
 }
 
-function Team (name, abbrev, players) {
+function Team(name, abbrev, players) {
   this.name = name
   this.abbrev = abbrev
   this.players = players
@@ -23,9 +23,16 @@ function Team (name, abbrev, players) {
     total += this.players[i].rating
   }
 
-  if (this.players[0].playstyle != 3 && this.players[0].playstyle == this.players[1].playstyle && this.players[0].playstyle == this.players[2].playstyle) {
+  if (
+    this.players[0].playstyle != 3 &&
+    this.players[0].playstyle == this.players[1].playstyle &&
+    this.players[0].playstyle == this.players[2].playstyle
+  ) {
     total -= triplePlaystylePenalty
-  } else if (this.players[0].playstyle != 3 && (this.players[0].playstyle == this.players[1].playstyle || this.players[0].playstyle == this.players[2].playstyle)) {
+  } else if (
+    this.players[0].playstyle != 3 &&
+    (this.players[0].playstyle == this.players[1].playstyle || this.players[0].playstyle == this.players[2].playstyle)
+  ) {
     total -= doublePlaystylePenalty
   } else if (this.players[1].playstyle != 3 && this.players[1].playstyle == this.players[2].playstyle) {
     total -= doublePlaystylePenalty
@@ -45,7 +52,7 @@ function Team (name, abbrev, players) {
   }
 }
 
-function scoreEvent (team, player, time) {
+function scoreEvent(team, player, time) {
   let formattedTime = ''
   if (time < 0) {
     formattedTime += '+'
@@ -55,10 +62,10 @@ function scoreEvent (team, player, time) {
   formattedTime += ':'
   if (time % 60 < 10) formattedTime += '0'
   formattedTime += time % 60
-  return (formattedTime + ' - ' + player + ' has scored for ' + team)
+  return formattedTime + ' - ' + player + ' has scored for ' + team
 }
 
-function score (team, time) {
+function score(team, time) {
   team.goals++
   let ratingAmount = team.playerScoreChance(0) + team.playerScoreChance(1) + team.playerScoreChance(2)
   let rand = Math.floor(Math.random() * ratingAmount)
@@ -74,7 +81,7 @@ function score (team, time) {
   }
 }
 
-function simGame (t1, t2) {
+function simGame(t1, t2) {
   let time = 299
   let t1Odds = scoringOdds + (t1.rating - t2.rating) * 0.00005
   let t2Odds = scoringOdds + (t2.rating - t1.rating) * 0.00005
