@@ -12,12 +12,12 @@ const prefix = '!'
 const defaultDelay = 2000
 
 // Sample teams
-let t1 = new Team('Ghost Gaming', 'GG', [
+let t1 = new Team('Ghost Gaming', ':GG:', [
   new Player('AlphaKep', 50, 0),
   new Player('Gimmick', 60, 0),
   new Player('SquishyMuffinz', 70, 0),
 ])
-let t2 = new Team('Echo Fox', 'FOX', [new Player('Andy', 50, 0), new Player('hec', 60, 1), new Player('ClayX', 71, 2)])
+let t2 = new Team('Echo Fox', ':FOX:', [new Player('Andy', 50, 0), new Player('hec', 60, 1), new Player('ClayX', 71, 2)])
 
 client.on('ready', () => {
   console.log('Bot intialized.')
@@ -44,6 +44,7 @@ client.on('message', (message) => {
     if (args[1] == undefined) args[1] = 3
     let gameNum = 0
     let seriesEvents = []
+    seriesEvents.push(t1.abbrev + ' vs ' + t2.abbrev + ' @' + t1.name + ' @' + t2.name)
     while (wins[0] < args[1] && wins[1] < args[1]) {
       ++gameNum
       let game = new Game(t1, t2)
